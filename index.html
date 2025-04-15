@@ -4,21 +4,44 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Income Tax Calculator</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .container { width: 50%; margin: 0 auto; }
+        label { display: block; margin: 10px 0 5px; }
+        input, select { width: 100%; padding: 8px; margin: 5px 0 20px; }
+        button { padding: 10px 20px; background-color: #4CAF50; color: white; border: none; cursor: pointer; }
+        button:hover { background-color: #45a049; }
+    </style>
 </head>
 <body>
-    <h1>Income Tax Calculator</h1>
 
-    <!-- Input Form -->
+<div class="container">
+    <h1>Income Tax Calculator - Personal Details</h1>
     <form id="taxForm">
-        <label for="income">Enter Income: ₹</label>
-        <input type="number" id="income" name="income" required>
-        <button type="button" onclick="calculateTax()">Calculate Tax</button>
+        <!-- Personal Details Section -->
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+        
+        <label for="age">Age:</label>
+        <input type="number" id="age" name="age" required>
+
+        <label for="gender">Gender:</label>
+        <select id="gender" name="gender" required>
+            <option value="">Select Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+        </select>
+
+        <button type="button" id="nextBtn" onclick="nextSection()">Next</button>
     </form>
+</div>
 
-    <!-- Result Display -->
-    <h2>Tax Summary</h2>
-    <p id="result"></p>
+<script>
+    function nextSection() {
+        // Code to move to the next section (we'll implement later)
+        alert("Moving to the next section!");
+    }
+</script>
 
-    <script src="script.js"></script>
 </body>
 </html>
