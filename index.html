@@ -1,160 +1,147 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Amaccountable | Income Tax Calculator</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #f5f5f5;
-      margin: 0;
-      padding: 0;
-    }
-
-    header {
-      background-color: #1a237e;
-      color: white;
-      padding: 1rem;
-      text-align: center;
-      font-size: 1.5rem;
-      font-weight: bold;
-    }
-
-    .container {
-      max-width: 800px;
-      margin: 2rem auto;
-      background: white;
-      padding: 2rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    }
-
-    h2 {
-      color: #1a237e;
-      margin-bottom: 1rem;
-    }
-
-    .form-group {
-      margin-bottom: 1rem;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 0.3rem;
-      font-weight: 500;
-    }
-
-    input, select {
-      width: 100%;
-      padding: 0.5rem;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-    }
-
-    .hidden {
-      display: none;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amaccountable - Income Tax Calculator</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <header>
+        <h1>Welcome to Amaccountable - Income Tax Calculator</h1>
+    </header>
 
-<header>
-  Amaccountable – Income Tax Calculator
-</header>
+    <div class="container">
+        <!-- Section 1: Personal Information -->
+        <section id="section1">
+            <h2>Personal Information</h2>
 
-<div class="container">
-  <h2>Section 1: Personal Information</h2>
+            <label for="name">Name (Mandatory):</label>
+            <input type="text" id="name" name="name" required>
 
-  <div class="form-group">
-    <label>Name <span style="color:red;">*</span></label>
-    <input type="text" id="name" required />
-  </div>
+            <label for="age">Age (Mandatory):</label>
+            <input type="number" id="age" name="age" required>
 
-  <div class="form-group">
-    <label>Age <span style="color:red;">*</span></label>
-    <input type="number" id="age" required />
-  </div>
+            <label for="gender">Gender (Mandatory):</label>
+            <select id="gender" name="gender" required>
+                <option value="">Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+            </select>
 
-  <div class="form-group">
-    <label>Gender <span style="color:red;">*</span></label>
-    <select id="gender" required>
-      <option value="">-- Select Gender --</option>
-      <option value="Male">Male</option>
-      <option value="Female">Female</option>
-      <option value="Other">Other</option>
-    </select>
-  </div>
+            <label for="filing_assistance">Do you want assistance for filing IT? (Mandatory):</label>
+            <select id="filing_assistance" name="filing_assistance" onchange="toggleFields()" required>
+                <option value="">Select</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select>
 
-  <div class="form-group">
-    <label>Do you want assistance for filing IT? <span style="color:red;">*</span></label>
-    <select id="needHelp" onchange="toggleHelpFields()" required>
-      <option value="">-- Select --</option>
-      <option value="Yes">Yes</option>
-      <option value="No">No</option>
-    </select>
-  </div>
+            <div id="pan_div" class="conditional-field">
+                <label for="pan">PAN (Conditional):</label>
+                <input type="text" id="pan" name="pan">
+            </div>
 
-  <div class="form-group hidden" id="panGroup">
-    <label>PAN <span id="panStar" style="color:red; display:none;">*</span></label>
-    <input type="text" id="pan" />
-  </div>
+            <div id="mobile_div" class="conditional-field">
+                <label for="mobile">Mobile Number (Conditional):</label>
+                <input type="text" id="mobile" name="mobile">
+            </div>
 
-  <div class="form-group hidden" id="mobileGroup">
-    <label>Mobile Number <span id="mobileStar" style="color:red; display:none;">*</span></label>
-    <input type="text" id="mobile" />
-  </div>
+            <div id="email_div" class="conditional-field">
+                <label for="email">Email ID (Conditional):</label>
+                <input type="email" id="email" name="email">
+            </div>
 
-  <div class="form-group hidden" id="emailGroup">
-    <label>Email ID <span id="emailStar" style="color:red; display:none;">*</span></label>
-    <input type="email" id="email" />
-  </div>
+            <label for="residential_status">Residential Status (Mandatory):</label>
+            <select id="residential_status" name="residential_status" onchange="toggleRentField()" required>
+                <option value="">Select Status</option>
+                <option value="Own">Own</option>
+                <option value="Rented">Rented</option>
+            </select>
 
-  <div class="form-group">
-    <label>Residential Status <span style="color:red;">*</span></label>
-    <select id="residence" onchange="toggleRentField()" required>
-      <option value="">-- Select --</option>
-      <option value="Rented">Rented</option>
-      <option value="Own">Own</option>
-    </select>
-  </div>
-</div>
+            <div id="rent_paid_div" class="conditional-field" style="display:none;">
+                <label for="rent_paid">Rent Paid (HRA Claimed):</label>
+                <input type="number" id="rent_paid" name="rent_paid">
+            </div>
 
-<script>
-  function toggleHelpFields() {
-    const needHelp = document.getElementById("needHelp").value;
-    const panGroup = document.getElementById("panGroup");
-    const mobileGroup = document.getElementById("mobileGroup");
-    const emailGroup = document.getElementById("emailGroup");
+            <button type="button" onclick="goToSection2()">Next</button>
+        </section>
 
-    const panStar = document.getElementById("panStar");
-    const mobileStar = document.getElementById("mobileStar");
-    const emailStar = document.getElementById("emailStar");
+        <!-- Section 2: Salary & Deductions -->
+        <section id="section2" style="display:none;">
+            <h2>Salary & Deductions</h2>
 
-    if (needHelp === "Yes") {
-      panGroup.classList.remove("hidden");
-      mobileGroup.classList.remove("hidden");
-      emailGroup.classList.remove("hidden");
+            <label for="financial_year">Select Financial Year:</label>
+            <select id="financial_year" name="financial_year" required>
+                <option value="">Select Year</option>
+                <option value="2024-2025">2024-2025</option>
+                <option value="2023-2024">2023-2024</option>
+                <!-- Add more years here -->
+            </select>
 
-      panStar.style.display = "inline";
-      mobileStar.style.display = "inline";
-      emailStar.style.display = "inline";
-    } else {
-      panGroup.classList.remove("hidden");
-      mobileGroup.classList.remove("hidden");
-      emailGroup.classList.remove("hidden");
+            <label for="gross_salary">Gross Salary:</label>
+            <input type="number" id="gross_salary" name="gross_salary">
 
-      panStar.style.display = "none";
-      mobileStar.style.display = "none";
-      emailStar.style.display = "none";
-    }
-  }
+            <label for="standard_deduction">Standard Deduction:</label>
+            <input type="number" id="standard_deduction" name="standard_deduction" value="50000" disabled>
 
-  function toggleRentField() {
-    const residence = document.getElementById("residence").value;
-    localStorage.setItem("rentStatus", residence); // We'll use this in Section 2
-  }
-</script>
+            <label for="professional_tax">Professional Tax:</label>
+            <input type="number" id="professional_tax" name="professional_tax">
 
+            <label for="hra_received">HRA Received:</label>
+            <input type="number" id="hra_received" name="hra_received">
+
+            <div id="rent_paid_section">
+                <label for="rent_paid">Rent Paid (HRA Claimed):</label>
+                <input type="number" id="rent_paid" name="rent_paid">
+            </div>
+
+            <label for="deduction_80c">80C Deductions:</label>
+            <input type="number" id="deduction_80c" name="deduction_80c">
+
+            <label for="deduction_80d">80D Deductions:</label>
+            <input type="number" id="deduction_80d" name="deduction_80d">
+
+            <label for="other_deductions">Other Deductions:</label>
+            <input type="number" id="other_deductions" name="other_deductions">
+
+            <label for="other_income">Other Income:</label>
+            <input type="number" id="other_income" name="other_income">
+
+            <button type="button" onclick="goToSection3()">Next</button>
+        </section>
+
+        <!-- Section 3: Tax Calculation Results & Feedback -->
+        <section id="section3" style="display:none;">
+            <h2>Tax Calculation Results</h2>
+
+            <div style="display: flex; justify-content: space-between;">
+                <div>
+                    <h3>Old Regime</h3>
+                    <p id="old_regime_tax">₹0.00</p>
+                </div>
+                <div>
+                    <h3>New Regime</h3>
+                    <p id="new_regime_tax">₹0.00</p>
+                </div>
+            </div>
+
+            <h4>Recommended Regime:</h4>
+            <p id="recommended_regime">Choose the regime with the lowest tax amount.</p>
+
+            <h5>Note:</h5>
+            <p>The result is based on the inputs you provided. If you missed any income (e.g., FD interest), your final tax amount may change during actual filing.</p>
+
+            <button onclick="whatsappRedirect()">Contact Us (WhatsApp)</button>
+            <button onclick="downloadPDF()">Download PDF</button>
+
+            <h6>Feedback</h6>
+            <label>Was this helpful?</label>
+            <button onclick="giveFeedback('Yes')">Yes</button>
+            <button onclick="giveFeedback('No')">No</button>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
