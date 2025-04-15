@@ -16,30 +16,124 @@
 <body>
 
 <div class="container">
-    <h1>Income Tax Calculator - Personal Details</h1>
-    <form id="taxForm">
-        <!-- Personal Details Section -->
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required>
-        
-        <label for="age">Age:</label>
-        <input type="number" id="age" name="age" required>
+    <h1>Income Tax Calculator</h1>
 
-        <label for="gender">Gender:</label>
-        <select id="gender" name="gender" required>
-            <option value="">Select Gender</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-        </select>
+    <!-- Section 1: Personal Details -->
+    <div id="section1">
+        <h2>Personal Details</h2>
+        <form id="taxForm">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+            
+            <label for="age">Age:</label>
+            <input type="number" id="age" name="age" required>
 
-        <button type="button" id="nextBtn" onclick="nextSection()">Next</button>
-    </form>
+            <label for="gender">Gender:</label>
+            <select id="gender" name="gender" required>
+                <option value="">Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+            </select>
+
+            <button type="button" id="nextBtn" onclick="nextSection()">Next</button>
+        </form>
+    </div>
+
+    <!-- Section 2: Salary Details -->
+    <div id="section2" style="display:none;">
+        <h2>Salary Details</h2>
+        <form id="salaryForm">
+            <label for="grossSalary">Gross Salary:</label>
+            <input type="number" id="grossSalary" name="grossSalary" required>
+
+            <label for="standardDeduction">Standard Deduction (₹50,000):</label>
+            <input type="number" id="standardDeduction" name="standardDeduction" value="50000" readonly>
+
+            <label for="professionalTax">Professional Tax:</label>
+            <input type="number" id="professionalTax" name="professionalTax">
+
+            <label for="hraReceived">HRA Received:</label>
+            <input type="number" id="hraReceived" name="hraReceived">
+
+            <label for="rentPaid" id="rentPaidLabel" style="display:none;">Rent Paid:</label>
+            <input type="number" id="rentPaid" name="rentPaid" style="display:none;">
+
+            <label for="residentialStatus">Residential Status:</label>
+            <select id="residentialStatus" name="residentialStatus" required onchange="toggleRentPaid()">
+                <option value="">Select Status</option>
+                <option value="Own">Own</option>
+                <option value="Rented">Rented</option>
+            </select>
+
+            <button type="button" id="nextBtn" onclick="nextSection()">Next</button>
+        </form>
+    </div>
+
+    <!-- Section 3: Result and Feedback -->
+    <div id="section3" style="display:none;">
+        <h2>Tax Calculation Result</h2>
+        <p id="result"></p>
+        <button onclick="redirectToWhatsApp()">Contact us via WhatsApp</button>
+    </div>
+
 </div>
 
 <script>
+    let currentSection = 1;
+
+    // Function to move between sections
     function nextSection() {
-        // Code to move to the next section (we'll implement later)
-        alert("Moving to the next section!");
+        if (currentSection === 1) {
+            // Hide Section 1 and show Section 2
+            document.getElementById('section1').style.display = 'none';
+            document.getElementById('section2').style.display = 'block';
+            currentSection = 2;
+        }
+        else if (currentSection === 2) {
+            // Hide Section 2 and show Section 3
+            document.getElementById('section2').style.display = 'none';
+            document.getElementById('section3').style.display = 'block';
+            currentSection = 3;
+            
+            // Calculate tax result and display
+            calculateTax();
+        }
+    }
+
+    // Function to calculate tax (Placeholder for your logic)
+    function calculateTax() {
+        const grossSalary = parseFloat(document.getElementById('grossSalary').value);
+        const professionalTax = parseFloat(document.getElementById('professionalTax').value) || 0;
+        const hraReceived = parseFloat(document.getElementById('hraReceived').value) || 0;
+
+        // Example tax calculation logic (adjust with your actual logic)
+        const totalIncome = grossSalary - professionalTax;
+        const tax = totalIncome * 0.1;  // Assume 10% tax for example
+
+        document.getElementById('result').innerHTML = `Total Tax: ₹${tax.toFixed(2)}`;
+    }
+
+    // Function to handle Residential Status change
+    function toggleRentPaid() {
+        const residentialStatus = document.getElementById('residentialStatus').value;
+        if (residentialStatus === 'Rented') {
+            document.getElementById('rentPaidLabel').style.display = 'block';
+            document.getElementById('rentPaid').style.display = 'block';
+        } else {
+            document.getElementById('rentPaidLabel').style.display = 'none';
+            document.getElementById('rentPaid').style.display = 'none';
+        }
+    }
+
+    // Function to redirect to WhatsApp
+    function redirectToWhatsApp() {
+        const name = document.getElementById('name').value;
+        const result = document.getElementById('result').innerText;
+
+        const message = `Hello, I am ${name}. Here's my tax calculation result: ${result}`;
+        const encodedMessage = encodeURIComponent(message);
+        const whatsappUrl = `https://wa.me/?text=${encodedMessage}`;
+        window.open(whatsappUrl, '_blank');
     }
 </script>
 
