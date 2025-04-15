@@ -1,53 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Income Tax Calculator</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto p-4">
+        <h1 class="text-3xl font-semibold text-center mb-6">Income Tax Calculator</h1>
+        
+        <!-- Form -->
+        <form id="taxForm" class="bg-white p-6 rounded shadow-lg">
+            <!-- Salary Input -->
+            <div class="mb-4">
+                <label for="salary" class="block font-medium">Annual Salary (₹)</label>
+                <input type="number" id="salary" class="mt-2 p-2 w-full border rounded" required>
+            </div>
+            
+            <!-- Other Income Input -->
+            <div class="mb-4">
+                <label for="otherIncome" class="block font-medium">Other Income (₹)</label>
+                <input type="number" id="otherIncome" class="mt-2 p-2 w-full border rounded">
+            </div>
+            
+            <!-- Deductions Input -->
+            <div class="mb-4">
+                <label for="deductions" class="block font-medium">Deductions (₹)</label>
+                <input type="number" id="deductions" class="mt-2 p-2 w-full border rounded">
+            </div>
+            
+            <!-- Age Group Selection -->
+            <div class="mb-4">
+                <label for="age" class="block font-medium">Age Group</label>
+                <select id="age" class="mt-2 p-2 w-full border rounded">
+                    <option value="below60">Below 60</option>
+                    <option value="60to80">60-80</option>
+                    <option value="above80">Above 80</option>
+                </select>
+            </div>
+            
+            <!-- Tax Regime Selection -->
+            <div class="mb-4">
+                <label for="regime" class="block font-medium">Tax Regime</label>
+                <select id="regime" class="mt-2 p-2 w-full border rounded">
+                    <option value="old">Old Regime</option>
+                    <option value="new">New Regime</option>
+                </select>
+            </div>
+            
+            <button type="submit" class="bg-blue-500 text-white p-2 rounded w-full">Calculate Tax</button>
+        </form>
 
-document.getElementById("taxForm").addEventListener("submit", function(event) {
-    event.preventDefault();
+        <!-- Results Section -->
+        <div id="result" class="mt-6 hidden">
+            <h2 class="text-xl font-semibold mb-4">Tax Calculation Comparison</h2>
 
-    const salary = parseFloat(document.getElementById("salary").value);
-    const otherIncome = parseFloat(document.getElementById("otherIncome").value || 0);
-    const deductions = parseFloat(document.getElementById("deductions").value || 0);
-    const ageGroup = document.getElementById("age").value;
-    const taxRegime = document.getElementById("regime").value;
+            <!-- Old Regime Result -->
+            <div id="oldRegimeResult" class="mb-4">
+                <h3 class="text-lg font-medium">Old Regime Tax Calculation</h3>
+                <p id="oldTaxResult" class="text-sm text-gray-700"></p>
+            </div>
 
-    let totalIncome = salary + otherIncome - deductions;
-    let tax = 0;
-
-    // Tax slab logic (for simplicity, basic implementation)
-    if (taxRegime === "old") {
-        if (totalIncome <= 250000) {
-            tax = 0;
-        } else if (totalIncome <= 500000) {
-            tax = (totalIncome - 250000) * 0.05;
-        } else if (totalIncome <= 1000000) {
-            tax = (250000 * 0.05) + (totalIncome - 500000) * 0.2;
-        } else {
-            tax = (250000 * 0.05) + (500000 * 0.2) + (totalIncome - 1000000) * 0.3;
-        }
-    } else {
-        if (totalIncome <= 250000) {
-            tax = 0;
-        } else if (totalIncome <= 500000) {
-            tax = (totalIncome - 250000) * 0.05;
-        } else if (totalIncome <= 750000) {
-            tax = (250000 * 0.05) + (totalIncome - 500000) * 0.1;
-        } else if (totalIncome <= 1000000) {
-            tax = (250000 * 0.05) + (250000 * 0.1) + (totalIncome - 750000) * 0.15;
-        } else {
-            tax = (250000 * 0.05) + (250000 * 0.1) + (250000 * 0.15) + (totalIncome - 1000000) * 0.2;
-        }
-    }
-
-    // Display tax result
-    const result = document.getElementById("result");
-    const taxResult = document.getElementById("taxResult");
-    taxResult.textContent = "Total Tax Payable: ₹" + tax.toFixed(2);
-
-    result.classList.remove("hidden");
-
-    // Generate PDF
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-    doc.text("Income Tax Calculation Result", 20, 20);
-    doc.text("Total Income: ₹" + totalIncome, 20, 30);
-    doc.text("Total Tax Payable: ₹" + tax.toFixed(2), 20, 40);
-    doc.save("Tax_Calculation_Result.pdf");
-});
+            <!-- New Regime Result -->
+            <div id="newRegimeResult" class="mb-4">
+                <h3 class="text-lg font-medium">New Regime Tax Calculation</h3>
+                <p id="newTaxResult" class="text-sm text-gray-700"></p>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsPDF/2.5.1/jspdf.umd.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
