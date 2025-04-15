@@ -1,16 +1,63 @@
-
 body {
     font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #007BFF;
+    color: white;
+    padding: 20px;
+    text-align: center;
 }
 
 .container {
-    max-width: 600px;
-    margin: auto;
+    padding: 20px;
 }
 
-#result {
-    background-color: #f7fafc;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+h2, h3, h4, h5 {
+    color: #333;
+}
+
+input, select {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    box-sizing: border-box;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Section layout */
+#section3 {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+#section3 div {
+    width: 48%;
+}
+
+/* Validation styling */
+input[required], select[required] {
+    border: 1px solid #ccc;
+    padding: 8px;
+    width: 100%;
+    margin-bottom: 10px;
+}
+input[required]:invalid, select[required]:invalid {
+    border-color: red;
 }
