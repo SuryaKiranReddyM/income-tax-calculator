@@ -3,143 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Amaccountable - Income Tax Calculator</title>
+    <title>Income Tax Calculator</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
-        <h1>Welcome to Amaccountable - Income Tax Calculator</h1>
-    </header>
-
     <div class="container">
+        <h1>Income Tax Calculator</h1>
+        
         <!-- Section 1: Personal Information -->
-        <section id="section1">
-            <h2>Personal Information</h2>
+        <div id="section1">
+            <h2>Section 1: Personal Information</h2>
+            <form id="form1">
+                <label for="name">Name:</label>
+                <input type="text" id="name" required><br>
 
-            <label for="name">Name (Mandatory):</label>
-            <input type="text" id="name" name="name" required>
+                <label for="age">Age:</label>
+                <input type="number" id="age" required><br>
 
-            <label for="age">Age (Mandatory):</label>
-            <input type="number" id="age" name="age" required>
+                <label for="gender">Gender:</label>
+                <select id="gender" required>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                </select><br>
 
-            <label for="gender">Gender (Mandatory):</label>
-            <select id="gender" name="gender" required>
-                <option value="">Select Gender</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Other">Other</option>
-            </select>
+                <label for="it_filing">Do you want assistance for filing IT?</label>
+                <select id="it_filing" onchange="toggleItFields()">
+                    <option value="no">No</option>
+                    <option value="yes">Yes</option>
+                </select><br>
 
-            <label for="filing_assistance">Do you want assistance for filing IT? (Mandatory):</label>
-            <select id="filing_assistance" name="filing_assistance" onchange="toggleFields()" required>
-                <option value="">Select</option>
-                <option value="Yes">Yes</option>
-                <option value="No">No</option>
-            </select>
+                <div id="pan_mobile_email">
+                    <label for="pan">PAN:</label>
+                    <input type="text" id="pan" required><br>
 
-            <div id="pan_div" class="conditional-field">
-                <label for="pan">PAN (Conditional):</label>
-                <input type="text" id="pan" name="pan">
-            </div>
+                    <label for="mobile">Mobile Number:</label>
+                    <input type="text" id="mobile" required><br>
 
-            <div id="mobile_div" class="conditional-field">
-                <label for="mobile">Mobile Number (Conditional):</label>
-                <input type="text" id="mobile" name="mobile">
-            </div>
+                    <label for="email">Email ID:</label>
+                    <input type="email" id="email" required><br>
+                </div>
 
-            <div id="email_div" class="conditional-field">
-                <label for="email">Email ID (Conditional):</label>
-                <input type="email" id="email" name="email">
-            </div>
+                <label for="residential_status">Residential Status:</label>
+                <select id="residential_status" onchange="toggleRentField()">
+                    <option value="own">Own</option>
+                    <option value="rented">Rented</option>
+                </select><br>
 
-            <label for="residential_status">Residential Status (Mandatory):</label>
-            <select id="residential_status" name="residential_status" onchange="toggleRentField()" required>
-                <option value="">Select Status</option>
-                <option value="Own">Own</option>
-                <option value="Rented">Rented</option>
-            </select>
+                <div id="rent_field" style="display: none;">
+                    <label for="rent_paid">Rent Paid (HRA Claimed):</label>
+                    <input type="number" id="rent_paid"><br>
+                </div>
 
-            <div id="rent_paid_div" class="conditional-field" style="display:none;">
-                <label for="rent_paid">Rent Paid (HRA Claimed):</label>
-                <input type="number" id="rent_paid" name="rent_paid">
-            </div>
-
-            <button type="button" onclick="goToSection2()">Next</button>
-        </section>
+                <button type="button" onclick="nextSection('section2')">Next</button>
+            </form>
+        </div>
 
         <!-- Section 2: Salary & Deductions -->
-        <section id="section2" style="display:none;">
-            <h2>Salary & Deductions</h2>
+        <div id="section2" style="display: none;">
+            <h2>Section 2: Salary & Deductions</h2>
+            <form id="form2">
+                <label for="gross_salary">Gross Salary:</label>
+                <input type="number" id="gross_salary" required><br>
 
-            <label for="financial_year">Select Financial Year:</label>
-            <select id="financial_year" name="financial_year" required>
-                <option value="">Select Year</option>
-                <option value="2024-2025">2024-2025</option>
-                <option value="2023-2024">2023-2024</option>
-                <!-- Add more years here -->
-            </select>
+                <label for="standard_deduction">Standard Deduction (₹50,000):</label>
+                <input type="number" id="standard_deduction" value="50000" readonly><br>
 
-            <label for="gross_salary">Gross Salary:</label>
-            <input type="number" id="gross_salary" name="gross_salary">
+                <label for="hra">HRA Received:</label>
+                <input type="number" id="hra"><br>
 
-            <label for="standard_deduction">Standard Deduction:</label>
-            <input type="number" id="standard_deduction" name="standard_deduction" value="50000" disabled>
+                <label for="deductions_80c">80C Deductions:</label>
+                <input type="number" id="deductions_80c"><br>
 
-            <label for="professional_tax">Professional Tax:</label>
-            <input type="number" id="professional_tax" name="professional_tax">
+                <label for="deductions_80d">80D Deductions:</label>
+                <input type="number" id="deductions_80d"><br>
 
-            <label for="hra_received">HRA Received:</label>
-            <input type="number" id="hra_received" name="hra_received">
+                <label for="other_deductions">Other Deductions:</label>
+                <input type="number" id="other_deductions"><br>
 
-            <div id="rent_paid_section">
-                <label for="rent_paid">Rent Paid (HRA Claimed):</label>
-                <input type="number" id="rent_paid" name="rent_paid">
+                <label for="other_income">Other Income:</label>
+                <input type="number" id="other_income"><br>
+
+                <button type="button" onclick="nextSection('section3')">Next</button>
+                <button type="button" onclick="previousSection('section1')">Back</button>
+            </form>
+        </div>
+
+        <!-- Section 3: Tax Calculation Results -->
+        <div id="section3" style="display: none;">
+            <h2>Section 3: Tax Calculation Results</h2>
+            <div id="tax_results">
+                <p>Tax Calculation under Old Regime: ₹<span id="old_tax"></span></p>
+                <p>Tax Calculation under New Regime: ₹<span id="new_tax"></span></p>
+                <p>Recommended Regime: <span id="recommended_regime"></span></p>
+                <p id="note">The result is based on the inputs you provided. If you missed any income (e.g., FD interest), your final tax amount may change during actual filing.</p>
             </div>
 
-            <label for="deduction_80c">80C Deductions:</label>
-            <input type="number" id="deduction_80c" name="deduction_80c">
-
-            <label for="deduction_80d">80D Deductions:</label>
-            <input type="number" id="deduction_80d" name="deduction_80d">
-
-            <label for="other_deductions">Other Deductions:</label>
-            <input type="number" id="other_deductions" name="other_deductions">
-
-            <label for="other_income">Other Income:</label>
-            <input type="number" id="other_income" name="other_income">
-
-            <button type="button" onclick="goToSection3()">Next</button>
-        </section>
-
-        <!-- Section 3: Tax Calculation Results & Feedback -->
-        <section id="section3" style="display:none;">
-            <h2>Tax Calculation Results</h2>
-
-            <div style="display: flex; justify-content: space-between;">
-                <div>
-                    <h3>Old Regime</h3>
-                    <p id="old_regime_tax">₹0.00</p>
-                </div>
-                <div>
-                    <h3>New Regime</h3>
-                    <p id="new_regime_tax">₹0.00</p>
-                </div>
-            </div>
-
-            <h4>Recommended Regime:</h4>
-            <p id="recommended_regime">Choose the regime with the lowest tax amount.</p>
-
-            <h5>Note:</h5>
-            <p>The result is based on the inputs you provided. If you missed any income (e.g., FD interest), your final tax amount may change during actual filing.</p>
-
-            <button onclick="whatsappRedirect()">Contact Us (WhatsApp)</button>
-            <button onclick="downloadPDF()">Download PDF</button>
-
-            <h6>Feedback</h6>
-            <label>Was this helpful?</label>
-            <button onclick="giveFeedback('Yes')">Yes</button>
-            <button onclick="giveFeedback('No')">No</button>
-        </section>
+            <button type="button" onclick="downloadPDF()">Download PDF</button>
+            <button type="button" onclick="redirectToWhatsApp()">Contact us via WhatsApp</button>
+        </div>
     </div>
 
     <script src="script.js"></script>
