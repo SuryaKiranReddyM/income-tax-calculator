@@ -1,4 +1,9 @@
-function nextSection(sectionId) {
+function nextSection(sectionId, currentSectionId = null) {
+    if (currentSectionId && !validateSection(currentSectionId)) {
+        alert("Please fill all required fields correctly before proceeding.");
+        return;
+    }
+
     const sections = document.querySelectorAll('div[id^="section"]');
     sections.forEach(section => section.style.display = 'none');
     document.getElementById(sectionId).style.display = 'block';
@@ -6,6 +11,20 @@ function nextSection(sectionId) {
 
 function previousSection(sectionId) {
     nextSection(sectionId);
+}
+
+function validateSection(sectionId) {
+    const section = document.getElementById(sectionId);
+    const inputs = section.querySelectorAll("input, select");
+    for (let input of inputs) {
+        if (input.required && !input.value.trim()) {
+            input.style.borderColor = "red";
+            return false;
+        } else {
+            input.style.borderColor = "#ccc";
+        }
+    }
+    return true;
 }
 
 function toggleItFields() {
@@ -22,6 +41,11 @@ function toggleRentField() {
 }
 
 function calculateTax() {
+    if (!validateSection('section2')) {
+        alert("Please fill all required fields correctly before proceeding.");
+        return;
+    }
+
     const grossSalary = parseFloat(document.getElementById("gross_salary").value || 0);
     const deductions80C = parseFloat(document.getElementById("deductions_80c").value || 0);
     const deductions80D = parseFloat(document.getElementById("deductions_80d").value || 0);
@@ -70,3 +94,12 @@ function redirectToWhatsApp() {
 function downloadPDF() {
     alert("PDF download functionality coming soon.");
 }
+
+document.getElementById("display_gross_salary_old").textContent = grossSalary.toFixed(2);
+document.getElementById("display_gross_salary_new").textContent = grossSalary.toFixed(2);
+document.getElementById("display_deductions_80c").textContent = deductions80C.toFixed(2);
+document.getElementById("display_deductions_80d").textContent = deductions80D.toFixed(2);
+document.getElementById("display_other_deductions").textContent = otherDeductions.toFixed(2);
+document.getElementById("total_deductions_old").textContent = totalDeductionsOld.toFixed(2);
+document.getElementById("taxable_income_old").textContent = taxableIncomeOld.toFixed(2);
+document.getElementById("taxable_income_new").textContent = taxableIncomeNew.toFixed(2);
